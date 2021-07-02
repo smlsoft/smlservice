@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  smljavawebservice:
+    image: smlsoft/smljavawebservice:3.0.2
+    restart: always
+    expose:
+      - 8080
+    volumes:
+      - ../tomcat/temp:/usr/local/tomcat/temp
+    networks:
+      - backend
+    labels:
+      # - "traefik.http.routers.smljavawebservice.rule=(Host(`host.com`) && PathPrefix(`/SMLJavaWebService`))"
+      - "traefik.http.routers.smljavawebservice.rule=(PathPrefix(`/SMLJavaWebService`))"
+      
+networks:
+  backend:
+    external:
+      name: sml_service_network
