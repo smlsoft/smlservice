@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  smljavawebservice:
+  smljavarestservice:
     image: smlsoft/smljavarestservice:3.0.3
     restart: always
     expose:
