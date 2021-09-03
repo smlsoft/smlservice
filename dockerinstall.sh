@@ -22,5 +22,5 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-
 #set owner
 sudo chmod +x /usr/local/bin/docker-compose
 
-# create network
-sudo docker network create sml_service_network
+# create network move to runall
+# sudo docker network create sml_service_network
