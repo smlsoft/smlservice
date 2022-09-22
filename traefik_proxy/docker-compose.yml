@@ -9,7 +9,7 @@ services:
       - "--entrypoints.web.address=:80"
 #      - "--providers.docker.exposedbydefault=false"
       - "--api.dashboard=true"
-      - "--log.level=DEBUG"
+#      - "--log.level=DEBUG"
     labels:
       # - "traefik.enable=true"
       # - "traefik.http.routers.api.rule=(Host(`host.com`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`)))"
