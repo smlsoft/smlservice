@@ -2,7 +2,7 @@ version: '3'
 
 services:
   smljavawebservice:
-    image: smlsoft/smlprice
+    image: smlsoft/smlpricecenter:latest
     restart: always
     expose:
       - 8080
@@ -20,7 +20,7 @@ services:
 #      - "traefik.frontend.rule=PathPrefix:/SMLJavaWebService"
 
       # traefik v2
-      - "traefik.http.routers.smlprice.rule=(Host(`smldemo.smlsoft.com`) && PathPrefix(`/smlprice`))"
+      - "traefik.http.routers.smlprice.rule=(Host(`smldemo.smlsoft.com`) && PathPrefix(`/SMLPriceCenter`))"
       
 networks:
   backend:
