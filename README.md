@@ -12,3 +12,15 @@ $ bash dockerrunallcontainer.sh
 
 ```
 
+## for new ubuntu 22.04
+
+```
+$ bash dockerrunallcontainer3.sh
+```
+
+
+## For Update 
+
+```
+git fetch 
+```
