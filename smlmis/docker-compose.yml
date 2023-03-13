@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  smlmis:
+    image: smlsoft/mis:2020
+    restart: always
+    expose:
+      - 8080
+    volumes:
+      - ../tomcat/temp:/usr/local/tomcat/temp
+    networks:
+      - backend
+    labels:
+      - "traefik.http.routers.smlmis.rule=(PathPrefix(`/mis`))"
+      
+networks:
+  backend:
+    external:
+      name: sml_service_network
