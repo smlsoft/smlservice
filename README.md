@@ -22,5 +22,5 @@ $ bash dockerrunallcontainer3.sh
 ## For Update 
 
 ```
-git fetch 
+git pull origin master
 ```

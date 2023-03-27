@@ -2,7 +2,7 @@ version: '3'
 
 services:
   smljavawebservice:
-    image: smlsoft/smljavawebservice:3.0.8
+    image: ghcr.io/smlsoft/smljavawebservice:3.6.3
     restart: always
     expose:
       - 8080
