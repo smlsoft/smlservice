@@ -2,7 +2,7 @@ version: '3'
 
 services:  
   postgresql:
-    image: smlsoft/smlpostgres:11-thai
+    image: ghcr.io/smlsoft/smlpostgres:11-thai
     container_name: sml_postgresql
     restart: always
     shm_size: 1g
@@ -15,7 +15,7 @@ services:
     networks:
       - backend
   postgrsql_backup:
-    image: smlsoft/smlpgbackup:11
+    image: ghcr.io/smlsoft/smlpgbackup:11
     container_name: sml_postgresql_autobackup
     restart: always
     volumes:
