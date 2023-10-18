@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  sml_php:
+    image: smlsoft:smlphp-apache:7.1
+    expose:
+      - 80
+    volumes:
+      - ./html:/var/www/html/
+    labels:
+      - "traefik.http.routers.smlstockcount.rule=(PathPrefix(`/smlstockcount`))"
+    networks:
+      - backend
+networks:
+  backend:
+    external:
+      name: sml_service_network      
