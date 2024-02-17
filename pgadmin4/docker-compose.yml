@@ -1,4 +1,4 @@
-version: '3'
+version: '3.9'
 
 services:
   pgadmin4:
@@ -9,13 +9,12 @@ services:
       - "PGADMIN_DEFAULT_EMAIL=support@smlsoft.com"
       - "PGADMIN_DEFAULT_PASSWORD=smlsupport"
       - "SCRIPT_NAME=/pgadmin4"
-    networks:
-      - backend
+    networks: ["sml_service_network"]
     labels:
       # - "traefik.http.routers.pgadmin4.rule=(Host(`host.com`) && PathPrefix(`/pgadmin4`))"
       - "traefik.http.routers.pgadmin4.rule=(PathPrefix(`/pgadmin4`))"
 
 networks:
-  backend:
-    external:
-      name: sml_service_network
+  sml_service_network:
+    external: true
+    name: sml_service_network
