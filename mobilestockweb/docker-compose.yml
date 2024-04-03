@@ -1,0 +1,21 @@
+version: '3.9'
+services:
+  mobilestock:
+    image: ghcr.io/smlsoft/smlstockcount:main
+    container_name: smlstockcount
+    expose:
+      - "80"
+    restart: always
+    networks: ["sml_service_network"]
+    labels:
+      - "traefik.http.routers.smlstockcount.rule=(PathPrefix(`/smlstockcount`))"
+    environment:
+      - DB_HOST=<postgres_host>
+      - DB_PORT=<postgres_port>
+      - DB_NAME=<postgres_db_name>
+      - DB_USER=<postgres_user_name>
+      - DB_PASSWORD=<postgres_password>
+networks:
+  sml_service_network:
+    external: true
+    name: sml_service_network
