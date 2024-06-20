@@ -24,3 +24,19 @@ $ bash dockerrunallcontainer3.sh
 ```
 git pull origin master
 ```
+
+## Change Docker Config Log file 
+
+```ssh
+$sudo nano /etc/docker/daemon.json
+```
+
+```yaml
+{
+    "log-driver": "json-file",
+    "log-opts": {
+        "max-size": "10m",
+        "max-file": "10"
+    }
+}
+```
