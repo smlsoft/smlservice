@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   smlslideshow:
     image: ghcr.io/smlsoft/smlslideshow:2.0.1
@@ -8,15 +6,13 @@ services:
       - 8080
     volumes:
       - ../tomcat/temp:/usr/local/tomcat/temp
-    networks:
-      - backend
     environment:
       - HOST_NAME=<your_host_name>
       - HOST_PORT=8080
     labels:
       - "traefik.http.routers.smlslideshow.rule=(PathPrefix(`/SMLSlideShow`))"
-      
+    networks: ["sml_service_network"]
 networks:
-  backend:
-    external:
-      name: sml_service_network
+  sml_service_network:
+    name: sml_service_network
+    external: true
