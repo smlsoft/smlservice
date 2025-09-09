@@ -22,10 +22,8 @@ services:
     ports:
       - 80:80
       - 8080:8080
-    networks:
-      - frontend
-
+    networks: ["sml_service_network"]
 networks:
-  frontend:
-    external:
-      name: sml_service_network
+  sml_service_network:
+    name: sml_service_network
+    external: true
