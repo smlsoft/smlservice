@@ -1,5 +1,3 @@
-version: '3'
-
 services:
   smljavawebservice:
     image: ghcr.io/smlsoft/smljavawebservice:3.9.7

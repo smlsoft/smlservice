@@ -31,6 +31,8 @@ services:
       - STOCK_PROCESS_CONSUMER_USERNAME=admin
       - STOCK_PROCESS_CONSUMER_PASSWORD=adminsml
       - STOCK_PROCESS_CONSUMER_TOPIC=when-request-stock-process
+    depends_on:
+      - rabbtitmq
 
     networks: ["sml_service_network"]
 networks:
