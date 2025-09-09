@@ -1,0 +1,11 @@
+# Send stock process job service
+
+Create jobs.yml
+```yaml
+cron_jobs: "0 3 * * *"
+servers:
+  - provider: "DATA"
+    rabbit_uri: "amqp://admin:adminsml@rabbitmq_smlprocess:5672/"
+    postgres_server: "sml_postgresql"
+    postgres_database: "data1"
+```
