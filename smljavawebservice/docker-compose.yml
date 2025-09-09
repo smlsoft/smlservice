@@ -8,13 +8,20 @@ services:
       - 8080
     volumes:
       - ../tomcat/temp:/usr/local/tomcat/temp
-    networks:
-      - backend
     labels:
       # - "traefik.http.routers.smljavawebservice.rule=(Host(`host.com`) && PathPrefix(`/SMLJavaWebService`))"
       - "traefik.http.routers.smljavawebservice.rule=(PathPrefix(`/SMLJavaWebService`))"
-      
+    # environment:
+    #   - JAVA_OPTS=-Xms512m -Xmx2048m
+    #   - "LOG4J_CONFIGURATION_FILE=classpath:debug-log4j2.properties"
+    #   - SML_NEXT_PROCESS_SERVER_MODE=RABBITMQ
+    #   - SML_NEXT_PROCESS_SERVER=rabbitmq_smlprocess
+    #   - SML_NEXT_PROCESS_SERVER_PORT=5672
+    #   - SML_NEXT_PROCESS_USERNAME=admin
+    #   - SML_NEXT_PROCESS_PASSWORD=adminsml
+    #   - SML_NEXT_PROCESS_CHANNEL_NAME=when-request-stock-process
+    networks: ["sml_service_network"]
 networks:
-  backend:
-    external:
-      name: sml_service_network
+  sml_service_network:
+    name: sml_service_network
+    external: true

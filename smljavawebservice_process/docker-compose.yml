@@ -1,0 +1,39 @@
+services:
+  rabbtitmq:
+    container_name: rabbitmq_smlprocess
+    image: rabbitmq:management
+    restart: always
+    expose:
+      - 5672
+      - 15672
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=adminsml
+    labels:
+      - "traefik.http.services.rabbitmq.loadbalancer.server.port=15672"
+      # - "traefik.http.routers.rabbitmq.rule=(Host(`host.com`) && PathPrefix(`/rabbitmq`))" // route with host
+      - "traefik.http.routers.rabbitmq.rule=(PathPrefix(`/rabbitmq`))"
+      - "traefik.http.routers.rabbitmq.middlewares=rabbitmq-middleware-stripprefix"
+      - "traefik.http.middlewares.rabbitmq-middleware-stripprefix.stripprefix.prefixes=/rabbitmq"
+    networks: ["sml_service_network"]
+
+  sml_ws_process:
+    container_name: sml_ws_process
+    image: ghcr.io/smlsoft/smljavawebservice:3.9.7
+    restart: always
+    volumes:
+      - ../tomcat/temp:/usr/local/tomcat/temp
+    environment:
+      - JAVA_OPTS=-Xms512m -Xmx2048m
+      - STOCK_PROCESS_CONSUMER_PROVIDER=RABBITMQ
+      - STOCK_PROCESS_CONSUMER_PROVIDER_SERVER=rabbitmq_smlprocess
+      - STOCK_PROCESS_CONSUMER_PORT=5672
+      - STOCK_PROCESS_CONSUMER_USERNAME=admin
+      - STOCK_PROCESS_CONSUMER_PASSWORD=adminsml
+      - STOCK_PROCESS_CONSUMER_TOPIC=when-request-stock-process
+
+    networks: ["sml_service_network"]
+networks:
+  sml_service_network:
+    name: sml_service_network
+    external: true
