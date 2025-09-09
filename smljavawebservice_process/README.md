@@ -8,7 +8,7 @@
 ---
 environment:
   - JAVA_OPTS=-Xms512m -Xmx2048m
-  - "LOG4J_CONFIGURATION_FILE=classpath:debug-log4j2.properties"
+  # - "LOG4J_CONFIGURATION_FILE=classpath:debug-log4j2.properties"
   - SML_NEXT_PROCESS_SERVER_MODE=RABBITMQ
   - SML_NEXT_PROCESS_SERVER=192.168.2.213
   - SML_NEXT_PROCESS_SERVER_PORT=5672
