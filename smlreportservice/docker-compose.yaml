@@ -1,0 +1,19 @@
+services:
+  smlslideshow:
+    image: smlsoft/smlreportservice
+    restart: always
+    expose:
+      - 8080
+    volumes:
+      - ../tomcat/temp:/usr/local/tomcat/temp
+    labels:
+      - "traefik.http.routers.smlreportservice.rule=(PathPrefix(`/SMLReportService`))"
+    networks: ["sml_service_network"]
+networks:
+  sml_service_network:
+    name: sml_service_network
+    external: true
+
+
+
+
