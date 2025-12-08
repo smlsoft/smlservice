@@ -1,0 +1,16 @@
+services:
+  postgres_exporter:
+    image: wrouesnel/postgres_exporter:latest 
+    container_name: sml_postgres_exporter
+    restart: always
+    environment:
+      # ตั้งค่าการเชื่อมต่อ DB ให้ Exporter
+      # รูปแบบ: postgresql://[user]:[password]@[host]:[port]/[database]?sslmode=[sslmode]
+      DATA_SOURCE_NAME: postgresql://${PG_USER}:${PG_PASSWORD}@${PG_HOST}:5432/postgres?sslmode=disable
+    ports:
+      - 9187:9187 # <--- พอร์ตสำหรับ Prometheus Scrape (Default: 9187)
+    networks: ["sml_service_network"]
+networks:
+  sml_service_network:
+    name: sml_service_network
+    external: true

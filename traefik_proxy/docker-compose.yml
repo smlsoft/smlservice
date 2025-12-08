@@ -5,9 +5,13 @@ services:
     command:
       - "--providers.docker=true"
       - "--entrypoints.web.address=:80"
-#      - "--providers.docker.exposedbydefault=false"
+      # - "--providers.docker.exposedbydefault=false"
       - "--api.dashboard=true"
-#      - "--log.level=DEBUG"
+      # - "--log.level=DEBUG"
+      # Enable Prometheus metrics endpoint
+      # - "--entrypoints.metrics.address=:9091"
+      # - "--metrics.prometheus=true"
+      # - "--metrics.prometheus.entrypoint=metrics"
     labels:
       # - "traefik.enable=true"
       # - "traefik.http.routers.api.rule=(Host(`host.com`) && (PathPrefix(`/api`) || PathPrefix(`/dashboard`)))"
@@ -15,11 +19,13 @@ services:
       - "traefik.http.routers.api.service=api@internal"
       - "traefik.http.routers.api.middlewares=auth"
       - "traefik.http.middlewares.auth.basicauth.users=toe:$$apr1$$9dmswe8v$$k1RQ.WAI57gWWHD.l/.dV1,sml:$$apr1$$ia38r5sb$$8uxrh4fGN.OOFjdhB9FNW0"
+      # - "traefik.http.middlewares.auth.basicauth.removeheader=true"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 80:80
       - 8080:8080
+      # - 9091:9091 # Prometheus metrics endpoint
     networks: ["sml_service_network"]
 networks:
   sml_service_network:
