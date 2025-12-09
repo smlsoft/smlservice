@@ -1,0 +1,40 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+    static_configs:
+    - targets: ['localhost:9090']
+
+#  - job_name: 'app-demo-metric'
+#    metrics_path: /metrics
+#    static_configs:
+#      - targets:
+#        - appdemometric-appdemometric-1:8080
+  - job_name: 'traefik'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['traefik-treafik-1:9091']
+        labels:
+          application: 'traefik'
+
+  - job_name: 'smljavawebservice-metrics'
+    static_configs:
+      - targets: ['smljavawebservice-metric-smljavawebservice-1:8081']
+        labels:
+          application: 'sml-service'
+          environment: 'production'
+
+  - job_name: 'smlsupport-javawebservice'
+    static_configs:
+      - targets: ['206.189.150.238:8881']
+        labels:
+          application: 'smlsupport-service'
+          environment: 'production'
+  - job_name: 'postgresql'
+    static_configs:
+      - targets: ['sml_postgres_exporter:9187']
+        labels:
+          application: 'postgresql'    

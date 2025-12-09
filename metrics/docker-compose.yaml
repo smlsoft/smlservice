@@ -1,0 +1,37 @@
+services:
+  prometheus:
+    image: prom/prometheus:v3.8.0
+    expose:
+      - 9090
+    container_name: prometheus
+    volumes:
+      - "./conf/prometheus.yml:/etc/prometheus/prometheus.yml"
+    networks: ["sml_service_network"]
+  grafana:
+    image: grafana/grafana:latest
+    restart: always
+    environment:
+      # - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      # - GF_AUTH_ANONYMOUS_ENABLED=true
+      # - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
+      # - GF_USERS_ALLOW_SIGN_UP=false
+      # - GF_USERS_DEFAULT_THEME=light
+      # - GF_DASHBOARDS_JSON_ENABLED=true
+      # - GF_DASHBOARDS_JSON_PATH=/var/lib/grafana/dashboards
+    volumes:
+      - grafana-data:/var/lib/grafana
+      # - ./dashboards:/var/lib/grafana/dashboards
+    expose:
+      - 3000
+    labels:
+      # - "traefik.http.routers.grafana.rule=(Host(`host.com`) && PathPrefix(`/grafana`))"
+      - "traefik.http.routers.grafana.rule=(Host(`host.com`) && PathPrefix(`/grafana`))"
+      - "traefik.http.middlewares.grafana-stripprefix.stripprefix.prefixes=/grafana"
+      - "traefik.http.routers.grafana.middlewares=grafana-stripprefix"
+
+    networks: ["sml_service_network"]
+networks:
+  sml_service_network:
+    name: sml_service_network
+    external: true
