@@ -8,11 +8,12 @@ services:
       - "./conf/prometheus.yml:/etc/prometheus/prometheus.yml"
     networks: ["sml_service_network"]
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:12.3
     restart: always
     environment:
       # - GF_SECURITY_ADMIN_USER=${GRAFANA_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      # - GF_SERVER_ROOT_URL=http://host:port/grafana
       # - GF_AUTH_ANONYMOUS_ENABLED=true
       # - GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer
       # - GF_USERS_ALLOW_SIGN_UP=false
@@ -20,7 +21,7 @@ services:
       # - GF_DASHBOARDS_JSON_ENABLED=true
       # - GF_DASHBOARDS_JSON_PATH=/var/lib/grafana/dashboards
     volumes:
-      - grafana-data:/var/lib/grafana
+      - ./grafana-data:/var/lib/grafana
       # - ./dashboards:/var/lib/grafana/dashboards
     expose:
       - 3000
