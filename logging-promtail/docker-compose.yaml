@@ -1,0 +1,25 @@
+services:
+  loki:
+    image: grafana/loki:3.6.3
+    container_name: loki
+    ports:
+      - "3100:3100" # Loki Default Port
+    command: -config.file=/etc/loki/config.yml
+    volumes:
+      - ./loki-config.yml:/etc/loki/config.yml # ใช้ config file แยก
+      - ./loki-data:/loki # Persistent storage สำหรับ logs
+    networks: ["sml_service_network"]
+  promtail:
+    image: grafana/promtail:latest
+    container_name: promtail
+    command: -config.file=/etc/promtail/promtail-config.yml
+    volumes:
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro # ให้ Promtail อ่าน logs ของ Docker
+      - /var/run/docker.sock:/var/run/docker.sock:ro             # ให้ Promtail เข้าถึง Docker metadata
+      - ./promtail-config.yml:/etc/promtail/promtail-config.yml # ใช้ config file ที่เราจะสร้าง
+    restart: unless-stopped
+    networks: ["sml_service_network"]
+networks:
+  sml_service_network:
+    name: sml_service_network
+    external: true

@@ -1,0 +1,72 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+#  log_level: debug
+
+positions:
+  filename: /tmp/positions.yaml # ตำแหน่งที่ Promtail เก็บสถานะการอ่าน Logs
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push # ชี้ไปที่ Loki Container ภายใน Docker network
+
+scrape_configs:
+#  # Scrape Logs จาก Docker Containers
+#  - job_name: docker-containers
+#    # ดึง Label จาก Docker metadata (เช่น ชื่อ Container, ID)
+#    docker_sd_configs:
+#      - host: unix:///var/run/docker.sock
+#        refresh_interval: 5s
+#
+#    relabel_configs:
+#      # 1. ดึงชื่อ Container มาเป็น Label 'container'
+#      - source_labels: ['__meta_docker_container_name']
+#        regex: '/(.*)'
+#        target_label: 'container'
+#      # 2. ดึงชื่อ Image มาเป็น Label 'image'
+#      - source_labels: ['__meta_docker_image']
+#        target_label: 'image'
+#      # 3. กำหนด Label 'job' เป็น 'containerlogs'
+#      - source_labels: ['__meta_docker_container_name']
+#        regex: '.*'
+#        target_label: 'job'
+#        replacement: 'containerlogs'
+#      # 4. ดึงชื่อ Service มาเป็น Label 'service'
+#      # (ใช้ชื่อที่กำหนดใน docker-compose เช่น sml-java-webservice, sml-rest-service)
+#      - source_labels: ['__meta_docker_container_label_com_docker_compose_service']
+#        target_label: 'service'
+#
+#    # กำหนดที่ตั้งของ Log Files ที่ Promtail จะไปอ่าน
+#    # ซึ่งตรงกับตำแหน่งที่ Promtail ได้รับจากการ Mount Volume ของ Docker
+#    pipeline_stages:
+#      - docker: {} # ใช้ stage นี้เพื่อแยก timestamp และ stream (stdout/stderr) จาก Log Format ของ Docker
+
+  - job_name: docker-containers
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        refresh_interval: 5s
+    relabel_configs:
+      # 1. ดึงชื่อ Service มาเป็น Label 'service' (ขั้นตอนเดิม)
+      - source_labels: ['__meta_docker_container_label_com_docker_compose_service']
+        target_label: 'service'
+
+      # 2. *** เพิ่ม Config สำหรับการละเว้น (Exclusion) ***
+      #    ใช้ Label 'service' ที่เราเพิ่งสร้างมาเป็น Source
+      - source_labels: ['service']
+        #regex: 'pgadmin4' # กำหนดชื่อ Service ที่ต้องการละเว้น
+        #action: drop      # Action: DROP หมายถึงให้ทิ้ง Log Stream นี้ทันที
+        regex: '^(postgresql|smljavawebservice|sml-rest-service)$'
+        action: keep
+
+      # 3. (Config เดิม) ดึงชื่อ Container มาเป็น Label 'container'
+      - source_labels: ['__meta_docker_container_name']
+        regex: '.*'
+        target_label: 'container'
+
+      # 4. (Config เดิม) กำหนด Label 'job'
+      - source_labels: ['__meta_docker_container_name']
+        regex: '.*'
+        target_label: 'job'
+        replacement: 'containerlogs'
+
+    pipeline_stages:
+      - docker: {}

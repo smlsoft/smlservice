@@ -4,8 +4,40 @@ services:
     expose:
       - 9090
     container_name: prometheus
+    command:
+      - --web.enable-remote-write-receiver
+      - --config.file=/etc/prometheus/prometheus.yml
+    #volumes:
+    #  - "./conf/prometheus.yml:/etc/prometheus/prometheus.yml"
+    networks: ["sml_service_network"]
+  loki:
+    image: grafana/loki:3.6.3
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/config.yml
     volumes:
-      - "./conf/prometheus.yml:/etc/prometheus/prometheus.yml"
+      - ./conf/loki-config.yml:/etc/loki/config.yml
+      - ./loki-data:/loki
+    networks: ["sml_service_network"]
+  alloy:
+    image: grafana/alloy:v1.12.1
+    container_name: alloy
+    ports:
+      - 12345:12345
+    privileged: true
+    user: root
+    command: run --server.http.listen-addr=0.0.0.0:12345 --storage.path=/var/lib/alloy/data /etc/alloy/config.alloy
+    volumes:
+      - ./conf/config.alloy:/etc/alloy/config.alloy
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /proc:/rootproc:ro
+      - /sys:/sys:ro
+      - /:/rootfs:ro
+      - /dev/disk/:/dev/disk:ro
+    devices:
+      - /dev/kmsg
     networks: ["sml_service_network"]
   grafana:
     image: grafana/grafana:12.3
