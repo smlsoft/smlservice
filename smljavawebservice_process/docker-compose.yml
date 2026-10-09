@@ -1,7 +1,7 @@
 services:
   rabbtitmq:
     container_name: rabbitmq_smlprocess
-    image: rabbitmq:management
+    image: rabbitmq:3-management
     restart: always
     expose:
       - 5672
