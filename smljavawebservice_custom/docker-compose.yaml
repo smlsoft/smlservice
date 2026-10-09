@@ -8,9 +8,9 @@ services:
       - 8080
     volumes:
       - ../tomcat/temp:/usr/local/tomcat/temp
-    labels:
-      # - "traefik.http.routers.smljavawebservice.rule=(Host(`host.com`) && PathPrefix(`/SMLJavaWebService`))"
-      - "traefik.http.routers.smljavawebservice.rule=(PathPrefix(`/SMLJavaWebService`))"
+    # labels:
+    #   - "traefik.http.routers.smljavawebservice.rule=(Host(`host.com`) && PathPrefix(`/SMLJavaWebService`))"
+    #   - "traefik.http.routers.smljavawebservice.rule=(PathPrefix(`/SMLJavaWebService`))"
     # environment:
     #   - JAVA_OPTS=-Xms512m -Xmx2048m
     #   - "LOG4J_CONFIGURATION_FILE=classpath:debug-log4j2.properties"
