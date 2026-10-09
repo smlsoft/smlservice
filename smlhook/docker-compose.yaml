@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  smlhook:
+    image: ghcr.io/smlsoft/smlhook:sha-23e7d66
+    container_name: smlhook
+    restart: always
+    environment:
+      - DATABASE_URL=postgres://postgres:pwd@host:5432/dbname?sslmode=disable
+      - POLL_INTERVAL=30s
+      - BATCH_SIZE=50
+      - HTTP_TIMEOUT=10s
+
+    networks:
+      - backend
+
+networks:
+  backend:
+    external:
+      name: sml_service_network
